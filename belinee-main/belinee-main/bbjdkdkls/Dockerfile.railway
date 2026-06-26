@@ -1,0 +1,27 @@
+FROM php:8.1-apache
+
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    default-mysql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-configure gd --with-jpeg --with-freetype
+RUN docker-php-ext-install -j$(nproc) pdo pdo_mysql gd
+
+RUN a2enmod rewrite
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+COPY . /var/www/html/
+
+RUN chown -R www-data:www-data /var/www/html
+RUN find /var/www/html -type d -exec chmod 755 {} \;
+RUN find /var/www/html -type f -exec chmod 644 {} \;
+
+# Инициализация БД при старте контейнера
+RUN chmod +x /var/www/html/init-db.sh
+
+EXPOSE 8080
+
+CMD bash -c "bash /var/www/html/init-db.sh && apache2-foreground"
