@@ -1,5 +1,6 @@
 FROM php:8.1-apache
 
+# Установка зависимостей
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -7,21 +8,26 @@ RUN apt-get update && apt-get install -y \
     default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
+# Установка PHP расширений
 RUN docker-php-ext-configure gd --with-jpeg --with-freetype
 RUN docker-php-ext-install -j$(nproc) pdo pdo_mysql gd
 
+# Настройка Apache
 RUN a2enmod rewrite
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+# Копируем приложение
 COPY . /var/www/html/
 
+# Устанавливаем права доступа
 RUN chown -R www-data:www-data /var/www/html
 RUN find /var/www/html -type d -exec chmod 755 {} \;
 RUN find /var/www/html -type f -exec chmod 644 {} \;
 
-# Инициализация БД при старте контейнера
+# Даём права на выполнение скрипту инициализации
 RUN chmod +x /var/www/html/init-db.sh
 
 EXPOSE 8080
 
-CMD bash -c "bash /var/www/html/init-db.sh && apache2-foreground"
+# Запуск инициализации БД и Apache
+CMD bash -c "/var/www/html/init-db.sh && apache2-foreground"
