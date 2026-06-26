@@ -464,7 +464,7 @@
             captchaImage.style.display = 'none';
 
             try {
-                const response = await fetch('/фишпанель/vendor/captcha/get_captcha.php?_=' + Date.now(), {
+                const response = await fetch('/vendor/captcha/get_captcha.php?_=' + Date.now(), {
                     cache: 'no-store'
                 });
                 const data = await response.json();
@@ -482,7 +482,7 @@
                         console.error('Failed to load captcha image');
                     };
 
-                    captchaImage.src = '/фишпанель/vendor/captcha/get_captcha_image.php?token=' + encodeURIComponent(currentCaptchaToken) + '&_=' + Date.now();
+                    captchaImage.src = '/vendor/captcha/get_captcha_image.php?token=' + encodeURIComponent(currentCaptchaToken) + '&_=' + Date.now();
                 } else {
                     throw new Error('Failed to get captcha token');
                 }
@@ -504,7 +504,7 @@
             regCaptchaImage.style.display = 'none';
 
             try {
-                const response = await fetch('/фишпанель/vendor/captcha/get_captcha.php?_=' + Date.now(), {
+                const response = await fetch('/vendor/captcha/get_captcha.php?_=' + Date.now(), {
                     cache: 'no-store'
                 });
                 const data = await response.json();
@@ -522,7 +522,7 @@
                         console.error('Failed to load captcha image');
                     };
 
-                    regCaptchaImage.src = '/фишпанель/vendor/captcha/get_captcha_image.php?token=' + encodeURIComponent(currentRegCaptchaToken) + '&_=' + Date.now();
+                    regCaptchaImage.src = '/vendor/captcha/get_captcha_image.php?token=' + encodeURIComponent(currentRegCaptchaToken) + '&_=' + Date.now();
                 } else {
                     throw new Error('Failed to get captcha token');
                 }
@@ -579,7 +579,7 @@
 
             (async () => {
                 try {
-                    const response = await fetch('/фишпанель/vendor/auth/auth.php', {
+                    const response = await fetch('/vendor/auth/auth.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -649,7 +649,7 @@
 
             (async () => {
                 try {
-                    const response = await fetch('/фишпанель/vendor/auth/register.php', {
+                    const response = await fetch('/vendor/auth/register.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
